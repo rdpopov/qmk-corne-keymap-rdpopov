@@ -1,0 +1,4 @@
+RGBLIGHT_ENABLE = no
+WPM_ENABLE = yes
+MOUSEKEY_ENABLE = yes
+OLED_ENABLE     = yes
