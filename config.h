@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define EE_HANDS
 
 //#define QUICK_TAP_TERM 0
-//#define TAPPING_TERM 100
+#define TAPPING_TERM 175
 
 // Mouse kinetic -> https://github.com/qmk/qmk_firmware/blob/master/docs/feature_mouse_keys.md
 #define MK_KINETIC_SPEED

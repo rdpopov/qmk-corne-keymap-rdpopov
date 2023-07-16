@@ -45,67 +45,77 @@ enum custom_keycodes {
     KC_LAYER
 };
 
-/* enum { */
-/*     // top layer to have the numbers */
-/*     TD_Q_1, */
-/*     TD_W_2, */
-/*     TD_E_3, */
-/*     TD_R_4, */
-/*     TD_T_5, */
-/*     TD_Y_6, */
-/*     TD_U_7, */
-/*     TD_I_8, */
-/*     TD_O_9, */
-/*     TD_P_0, */
-/*     // brackets */
-/*     TD_L_SQ_BR_L, */
-/*     TD_SCLN_SQ_BR_R, */
-/*     TD */
-/*     // slants */
-/* }; */
+enum {
+    // top layer to have the numbers
+    Q_1,
+    W_2,
+    E_3,
+    R_4,
+    T_5,
+    Y_6,
+    U_7,
+    I_8,
+    O_9,
+    P_0,
+    // brackets
+    L_SQ_BR_L,
+    SCLN_SQ_BR_R,
+    // mods
+    BR_L_MIN,
+    BR_R_EQL,
+    WIN_TAB,
+    QT_PIPE,
+    TAB_CTRL
+};
 
 /* // Tap Dance definitions */
-/* tap_dance_action_t tap_dance_actions[] = { */
-/*     // Tap once for Escape, twice for Caps Lock */
-/*     [TD_Q_1] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_1), */
-/*     [TD_W_2] = ACTION_TAP_DANCE_DOUBLE(KC_W, KC_2), */
-/*     [TD_E_3] = ACTION_TAP_DANCE_DOUBLE(KC_E, KC_3), */
-/*     [TD_R_4] = ACTION_TAP_DANCE_DOUBLE(KC_R, KC_4), */
-/*     [TD_T_5] = ACTION_TAP_DANCE_DOUBLE(KC_T, KC_5), */
-/*     [TD_Y_6] = ACTION_TAP_DANCE_DOUBLE(KC_Y, KC_6), */
-/*     [TD_U_7] = ACTION_TAP_DANCE_DOUBLE(KC_U, KC_7), */
-/*     [TD_I_8] = ACTION_TAP_DANCE_DOUBLE(KC_I, KC_8), */
-/*     [TD_O_9] = ACTION_TAP_DANCE_DOUBLE(KC_O, KC_9), */
-/*     [TD_P_0] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_0), */
-/* }; */
+tap_dance_action_t tap_dance_actions[] = {
+    // Tap once for Escape, twice for Caps Lock
+    [Q_1]            = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_1),
+    [W_2]            = ACTION_TAP_DANCE_DOUBLE(KC_W, KC_2),
+    [E_3]            = ACTION_TAP_DANCE_DOUBLE(KC_E, KC_3),
+    [R_4]            = ACTION_TAP_DANCE_DOUBLE(KC_R, KC_4),
+    [T_5]            = ACTION_TAP_DANCE_DOUBLE(KC_T, KC_5),
+    [Y_6]            = ACTION_TAP_DANCE_DOUBLE(KC_Y, KC_6),
+    [U_7]            = ACTION_TAP_DANCE_DOUBLE(KC_U, KC_7),
+    [I_8]            = ACTION_TAP_DANCE_DOUBLE(KC_I, KC_8),
+    [O_9]            = ACTION_TAP_DANCE_DOUBLE(KC_O, KC_9),
+    [P_0]            = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_0),
+
+
+    [ L_SQ_BR_L ]    = ACTION_TAP_DANCE_DOUBLE(KC_L,KC_LBRC),
+    [ SCLN_SQ_BR_R ] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN,KC_RBRC),
+    [ BR_L_MIN ]     = ACTION_TAP_DANCE_DOUBLE(KC_DOT , KC_MINS ),
+    [ BR_R_EQL ]     = ACTION_TAP_DANCE_DOUBLE(KC_SLASH , KC_EQL),
+    [ WIN_TAB ]      = ACTION_TAP_DANCE_DOUBLE(KC_LGUI,KC_TAB),
+    [ QT_PIPE ]      = ACTION_TAP_DANCE_DOUBLE(KC_QUOT,KC_BSLS),
+    [ TAB_CTRL ]  = ACTION_TAP_DANCE_DOUBLE(KC_TAB,KC_RCTL),
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+       KC_ESC, TD(Q_1), TD(W_2), TD(E_3), TD(R_4), TD(T_5),                      TD(Y_6), TD(U_7), TD(I_8), TD(O_9), TD(P_0), KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LGUI,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
+    TD(WIN_TAB),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,TD(L_SQ_BR_L),TD( SCLN_SQ_BR_R), TD(QT_PIPE),
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_TAB,
+     KC_LSFT,     KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, TD( BR_L_MIN), TD( BR_R_EQL), KC_SLSH, TD(TAB_CTRL),
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           OSL(1),   KC_LCTL,  KC_SPC,     KC_ENT, KC_RALT,   OSL(2)
                                       //`--------------------------'  `--------------------------'
-
+                                      //
   ),
-
-
     [_LOWER] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LGUI, KC_WH_L, KC_WH_U, KC_WH_D, KC_WH_R, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC, KC_BSLS,
+      KC_LGUI,     KC_4,   KC_5,    KC_6, KC_MINS, KC_EQL ,                      XXXXXXX, XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC, KC_BSLS,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LSFT,
+      KC_LSFT,     KC_7,   KC_8,    KC_9,    KC_0, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_MINS,  KC_EQL, XXXXXXX, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                             _______, KC_LCTL,  KC_SPC,     KC_ENT, KC_RALT ,OSL(3)
                                       //`--------------------------'  `--------------------------'
   ),
-
 
     [_RAISE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
@@ -113,7 +123,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LGUI, KC_MS_L, KC_MS_U, KC_MS_D, KC_MS_R, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_PGDN, KC_PGUP, KC_BTN1, KC_BTN2, KC_BTN3,
+      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_PGDN, KC_PGUP, KC_BTN1, KC_BTN2, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                            OSL(3),KC_LCTL,  KC_SPC,     KC_ENT, KC_RALT, _______
                                       //`--------------------------'  `--------------------------'
