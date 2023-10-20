@@ -18,6 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+#ifdef PIMORONI_TRACKBALL_ENABLE
+#include "drivers/sensors/pimoroni_trackball.h"
+#endif
+
 #define VOL_UP KC_KB_VOLUME_UP
 #define VOL_DOWN KC_KB_VOLUME_DOWN
 #define VOL_MUTE KC_KB_MUTE
@@ -29,130 +33,83 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /* #define NE_TRACK KC_MEDIA_NEXT_TRACK */
 /* #define PR_TRACK KC_MEDIA_PREV_TRACK */
 /* #define PL_PAUSE KC_MEDIA_PLAY_PAUSE */
-enum sofle_layers {
+enum crkbd_layers {
     _QWERTY,
-    _LOWER,
-    _RAISE,
+    _SCROLL,
+    _MOUSE,
     _ADJUST,
 };
 
 enum custom_keycodes {
     KC_QWERTY,
-    KC_LOWER,
-    KC_RAISE,
+    KC_SCROLL,
+    KC_MOUSE,
     KC_ADJUST,
     KC_BSPC_DEL,
     KC_LAYER
 };
 
-enum {
-    // top layer to have the numbers
-    Q_1,
-    W_2,
-    E_3,
-    R_4,
-    T_5,
-    Y_6,
-    U_7,
-    I_8,
-    O_9,
-    P_0,
-    // brackets
-    L_SQ_BR_L,
-    SCLN_SQ_BR_R,
-    // mods
-    BR_L_MIN,
-    BR_R_EQL,
-    WIN_TAB,
-    QT_PIPE,
-    TAB_CTRL
-};
+enum Taps {
+    [TD_SP_TB] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
+}
 
-/* // Tap Dance definitions */
 tap_dance_action_t tap_dance_actions[] = {
-    // Tap once for Escape, twice for Caps Lock
-    [Q_1]            = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_1),
-    [W_2]            = ACTION_TAP_DANCE_DOUBLE(KC_W, KC_2),
-    [E_3]            = ACTION_TAP_DANCE_DOUBLE(KC_E, KC_3),
-    [R_4]            = ACTION_TAP_DANCE_DOUBLE(KC_R, KC_4),
-    [T_5]            = ACTION_TAP_DANCE_DOUBLE(KC_T, KC_5),
-    [Y_6]            = ACTION_TAP_DANCE_DOUBLE(KC_Y, KC_6),
-    [U_7]            = ACTION_TAP_DANCE_DOUBLE(KC_U, KC_7),
-    [I_8]            = ACTION_TAP_DANCE_DOUBLE(KC_I, KC_8),
-    [O_9]            = ACTION_TAP_DANCE_DOUBLE(KC_O, KC_9),
-    [P_0]            = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_0),
 
-
-    [ L_SQ_BR_L ]    = ACTION_TAP_DANCE_DOUBLE(KC_L,KC_LBRC),
-    [ SCLN_SQ_BR_R ] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN,KC_RBRC),
-    [ BR_L_MIN ]     = ACTION_TAP_DANCE_DOUBLE(KC_COMM , KC_MINS ),
-    [ BR_R_EQL ]     = ACTION_TAP_DANCE_DOUBLE(KC_DOT , KC_EQL),
-    [ WIN_TAB ]      = ACTION_TAP_DANCE_DOUBLE(KC_LGUI,KC_TAB),
-    [ QT_PIPE ]      = ACTION_TAP_DANCE_DOUBLE(KC_QUOT,KC_BSLS),
-    [ TAB_CTRL ]  = ACTION_TAP_DANCE_DOUBLE(KC_TAB,KC_RCTL),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC, TD(Q_1), TD(W_2), TD(E_3), TD(R_4), TD(T_5),                      TD(Y_6), TD(U_7), TD(I_8), TD(O_9), TD(P_0), KC_BSPC,
+       KC_ESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-    TD(WIN_TAB),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,TD(L_SQ_BR_L),TD( SCLN_SQ_BR_R), TD(QT_PIPE),
+OSM(MOD_LGUI),    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-     KC_LSFT,     KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, TD( BR_L_MIN), TD( BR_R_EQL), KC_SLSH, TD(TAB_CTRL),
+OSM(MOD_LSFT),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          OSL(1),   KC_LCTL,  KC_SPC,     KC_ENT, KC_RALT,   OSL(2)
+                                     TT(_SCROLL),  OSM(MOD_LCTL),  KC_SPC,  KC_ENT, OSM(MOD_RALT),   TT(_MOUSE)
                                       //`--------------------------'  `--------------------------'
                                       //
   ),
-    [_LOWER] = LAYOUT_split_3x6_3(
+    [_SCROLL] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LGUI,     KC_4,   KC_5,    KC_6, KC_MINS, KC_EQL ,                      XXXXXXX, XXXXXXX, XXXXXXX, KC_LBRC, KC_RBRC, KC_BSLS,
+      KC_LGUI,     KC_4,   KC_5,    KC_6, KC_MINS, KC_EQL ,                      KC_MINS,  KC_LBRC, KC_RBRC,KC_EQL,XXXXXXX, KC_BSLS,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,     KC_7,   KC_8,    KC_9,    KC_0, XXXXXXX,                      XXXXXXX, XXXXXXX, KC_MINS,  KC_EQL, XXXXXXX, KC_TAB,
+      KC_LSFT,     KC_7,   KC_8,    KC_9,    KC_0, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                            _______, KC_LCTL,  KC_SPC,     KC_ENT, KC_RALT ,OSL(3)
+                                     _______,OSM(MOD_LCTL),  KC_SPC,  KC_ENT,    OSM(MOD_LCTL), _______
                                       //`--------------------------'  `--------------------------'
   ),
 
-    [_RAISE] = LAYOUT_split_3x6_3(
+    [_MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8, KC_MINS,  KC_EQL, KC_BSPC,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LGUI, KC_MS_L, KC_MS_U, KC_MS_D, KC_MS_R, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,
-  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, KC_PGDN, KC_PGUP, KC_BTN1, KC_BTN2, KC_TAB,
+       KC_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_BTN3, KC_BTN2,  KC_COMM,  KC_DOT, KC_SLSH,  KC_TAB,
+  //|--------+-----+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|com
+      KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,
+  //|--------+-----+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END, KC_BTN1, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           OSL(3),KC_LCTL,  KC_SPC,     KC_ENT, KC_RALT, _______
+                                     _______,OSM(MOD_LCTL),  KC_BTN1,     KC_BTN2, OSM(MOD_RALT), _______
                                       //`--------------------------'  `--------------------------'
   ),
     [_ADJUST] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       QK_BOOT, KC_F1  , KC_F2  , KC_F3  ,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F10,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, VOL_UP, VOL_DOWN,VOL_MUTE,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F11,
+      XXXXXXX, XXXXXXX, XXXXXXX, VOL_UP, VOL_DOWN,VOL_MUTE,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F11,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, PR_SCR ,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F12,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                           _______,KC_LGUI,  KC_SPC,     KC_ENT, KC_RALT, _______
+                                           _______,OSM(MOD_LCTL),  KC_SPC,     KC_ENT, OSM(MOD_RALT), _______
                                       //`--------------------------'  `--------------------------'
   )
 };
 
-
-/* #define OLED_TIMEOUT 120000 */
-/* #define OLED_BRIGHTNESS 120 */
-
 #ifdef OLED_ENABLE
 
-/* Smart Backspace Delete */
-
-bool            shift_held = false;
 static uint16_t held_shift = 0;
-
-/* KEYBOARD PET START */
+static bool shift_held = false;
 
 /* settings */
 #    define MIN_WALK_SPEED      10
@@ -176,7 +133,7 @@ uint32_t anim_timer = 0;
 uint8_t current_frame = 0;
 
 /* status variables */
-int   current_wpm = 0;
+static int   current_wpm = 0;
 led_t led_usb_state;
 
 bool isSneaking = false;
@@ -238,29 +195,21 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
                                                          0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x40, 0x40, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0xa0, 0x20, 0x40, 0x80, 0xc0, 0x20, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3e, 0x41, 0xf0, 0x04, 0x02, 0x02, 0x02, 0x03, 0x02, 0x02, 0x02, 0x04, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x04, 0x00, 0x40, 0x40, 0x55, 0x82, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3f, 0x20, 0x30, 0x0c, 0x02, 0x05, 0x09, 0x12, 0x1e, 0x04, 0x18, 0x10, 0x08, 0x10, 0x20, 0x28, 0x34, 0x06, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
                                                      }};
 
-    /* animation */
     void animate_luna(void) {
-        /* jump */
         if (isJumping || !showedJump) {
-            /* clear */
             oled_set_cursor(LUNA_X, LUNA_Y + 2);
             oled_write("     ", false);
-
             oled_set_cursor(LUNA_X, LUNA_Y - 1);
-
             showedJump = true;
         } else {
-            /* clear */
             oled_set_cursor(LUNA_X, LUNA_Y - 1);
             oled_write("     ", false);
-
             oled_set_cursor(LUNA_X, LUNA_Y);
         }
 
-        /* switch frame */
         current_frame = (current_frame + 1) % 2;
+        current_wpm = get_current_wpm();
 
-        /* current status */
         if (led_usb_state.caps_lock || shift_held ) {
             oled_write_raw_P(bark[current_frame], ANIM_SIZE);
         } else if (isSneaking) {
@@ -275,7 +224,6 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
     }
 
 #    if OLED_TIMEOUT > 0
-    /* the animation prevents the normal timeout from occuring */
     if (last_input_activity_elapsed() > OLED_TIMEOUT && last_led_activity_elapsed() > OLED_TIMEOUT) {
         oled_off();
         return;
@@ -284,7 +232,6 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
     }
 #    endif
 
-    /* animation timer */
     if (timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
         anim_timer = timer_read32();
         animate_luna();
@@ -293,14 +240,55 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
 
 #define CAT_SIZE 144
 
+static bool scrolling_mode = false;
+#define pim_red   pimoroni_trackball_set_rgbw(64,0,0,64)
+#define pim_green pimoroni_trackball_set_rgbw(0,64,0,64)
+#define pim_blue  pimoroni_trackball_set_rgbw(0,0,64,64)
 
-/* KEYBOARD PET END */
-
-static void print_logo_narrow(void) {
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (is_keyboard_master()) {
+        switch (get_highest_layer(state)) {
+            case _QWERTY:
+                toggle_pointing_mode_id(PM_CARET);
+                pim_green;
+                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
+                    scrolling_mode = false;
+                    pointing_device_set_cpi(8000);
+                }
+                break;
+            case _SCROLL:  // If we're on the _MOUSE layer enable scrolling mode
+                toggle_pointing_mode_id(PM_NONE);
+                pim_red;
+                scrolling_mode = true;
+                pointing_device_set_cpi(1000);
+                break;
+            case _MOUSE:
+                toggle_pointing_mode_id(PM_NONE);
+                pim_blue;
+                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
+                    scrolling_mode = false;
+                    pointing_device_set_cpi(8000);
+                }
+                break;
+        }
+    }
+    return state;
 }
 
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+    if (scrolling_mode) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
+
+
+static char pressed_mods[5] = {0};
+
 static void print_status_narrow(void) {
-    /* Print current mode */
     oled_set_cursor(0, 0);
     oled_set_cursor(0, 3);
 
@@ -313,21 +301,18 @@ static void print_status_narrow(void) {
     }
 
     oled_set_cursor(0, 5);
-
-    /* Print current layer */
     oled_write("LAYER", false);
-
     oled_set_cursor(0, 6);
 
     switch (get_highest_layer(layer_state)) {
         case _QWERTY:
             oled_write("Base ", false);
             break;
-        case _RAISE:
-            oled_write("Raise", false);
+        case _MOUSE:
+            oled_write("Mouse", false);
             break;
-        case _LOWER:
-            oled_write("Lower", false);
+        case _SCROLL:
+            oled_write("Scroll", false);
             break;
         case _ADJUST:
             oled_write("Adj  ", false);
@@ -335,71 +320,28 @@ static void print_status_narrow(void) {
         default:
             oled_write("Undef", false);
     }
-
-    /* caps lock */
-
-    // maybe we print the key code ?
+    int8_t mods = get_mods() | get_oneshot_mods() | get_weak_mods();
+    pressed_mods[0] = mods & MOD_BIT(KC_RALT) ?  'A' : '_';
+    pressed_mods[1] = mods & MOD_BIT(KC_LCTL) ?  'C' : '_';
+    pressed_mods[2] = mods & MOD_BIT(KC_LSFT) ?  'S' : '_';
+    pressed_mods[3] = mods & MOD_BIT(KC_LGUI) ?  'M' : '_';
+    oled_write(pressed_mods, false);
     oled_set_cursor(0, 8);
     oled_write_char(key_name, false);
-    /* oled_write("CPSLK", led_usb_state.caps_lock); */
-
-    /* KEYBOARD PET RENDER START */
-
     render_luna(0, 13);
-
-    /* KEYBOARD PET RENDER END */
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) { return OLED_ROTATION_270; }
 
 bool oled_task_user(void) {
-    /* KEYBOARD PET VARIABLES START */
-
     led_usb_state = host_keyboard_led_state();
-
-    /* KEYBOARD PET VARIABLES END */
-
-    if (is_keyboard_master()) {
-        print_status_narrow();
-    } else {
-        print_logo_narrow();
-    }
+    print_status_narrow();
     return false;
 }
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case KC_QWERTY:
-            if (record->event.pressed) {
-                set_single_persistent_default_layer(_QWERTY);
-            }
-            return false;
-        case KC_LOWER:
-            if (record->event.pressed) {
-                layer_on(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            } else {
-                layer_off(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            }
-            return false;
-        case KC_RAISE:
-            if (record->event.pressed) {
-                layer_on(_RAISE);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            } else {
-                layer_off(_RAISE);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            }
-            return false;
-        case KC_ADJUST:
-            if (record->event.pressed) {
-                layer_on(_ADJUST);
-            } else {
-                layer_off(_ADJUST);
-            }
-            return false;
         case KC_RSFT:
         case KC_LSFT:
             shift_held = record->event.pressed;
@@ -428,4 +370,5 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 }
+bool should_process_keypress(void) { return true; }
 #endif

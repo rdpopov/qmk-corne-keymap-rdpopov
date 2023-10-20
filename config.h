@@ -1,6 +1,4 @@
-/*
-This is the c configuration file for the keymap
-
+/* This is the c configuration file for the keymap
 Copyright 2012 Jun Wako <wakojun@gmail.com>
 Copyright 2015 Jack Humbert
 
@@ -24,12 +22,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Select hand configuration */
 
-#define MASTER_LEFT
-// #define MASTER_RIGHT
+//#define MASTER_LEFT
+#define MASTER_RIGHT
 // #define EE_HANDS
-
-//#define QUICK_TAP_TERM 0
-#define TAPPING_TERM 175
+#define SPLIT_TRANSPORT_MIRROR
+#define POINTING_DEVICE_MODES_ENABLE
+#define POINTING_DEVICE_ROTATION_90
+#define TAPPING_TOGGLE 2
+/* #define TAPPING_TERM 175 */
+#define SPLIT_WPM_ENABLE
+/* #define QUICK_TAP_TERM 1 */
 
 // Mouse kinetic -> https://github.com/qmk/qmk_firmware/blob/master/docs/feature_mouse_keys.md
 #define MK_KINETIC_SPEED
