@@ -50,48 +50,55 @@ enum custom_keycodes {
 };
 
 enum Taps {
-    TD_SP_TB,
+    TD_ESC_Q,
     TD_QUO_SLSH, // swapping those two. slash is a lot less usefiul
 };
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_QUO_SLSH] = ACTION_TAP_DANCE_DOUBLE(KC_QUOT, KC_SLSH),
-    [TD_BS_TB] = ACTION_TAP_DANCE_DOUBLE(KC_BSPC, KC_SLSH),
+    [TD_ESC_Q] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_Q),
 };
+
 #define D_H_ALT MT(MOD_LALT,KC_D)
 #define S_H_GUI MT(MOD_LGUI,KC_S)
+#define Z_H_SFT MT(MOD_LSFT,KC_Z)
+#define X_H_GUI MT(MOD_LGUI,KC_X)
 
-#define ENT_H_CTL MT(MOD_LCTL,KC_ENT)
-#define SPC_H_SHFT MT(MOD_LSHFT,KC_SPC)
+
+#define ENT_H_SFT MT(MOD_LSFT,KC_ENT)
+#define SPC_H_LCTL MT(MOD_LCTL,KC_SPC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+
     [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,    KC_A, S_H_GUI, D_H_ALT,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, XXXXXXX,
+      XXXXXXX,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, TD(TD_QUO_SLSH), XXXXXXX,
+      XXXXXXX, Z_H_SFT, X_H_GUI,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                    XXXXXXX,LT(_SCROLL,KC_ESC), SPC_H_SHFT,                    ENT_H_CTL,  LT(_MOUSE,KC_BSPC),XXXXXXX
+                    XXXXXXX,LT(_SCROLL,KC_ESC), SPC_H_LCTL,                    ENT_H_SFT,  LT(_MOUSE,KC_BSPC),XXXXXXX
                                       //`--------------------------'  `--------------------------'
                                       //
   ),
+
     [_SCROLL] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, OSM(MOD_SHFT), OSM(MOD_LGUI), OSM(MOD_LALT), OSM(MOD_LCTL), KC_GRV,    KC_MNS, KC_LBRC, KC_RBRC, KC_EQL, KC_TAB, XXXXXXX,
+      XXXXXXX, XXXXXXX, XXXXXXX, OSM(MOD_LALT), OSM(MOD_LCTL), KC_GRV,           KC_MINS, KC_LBRC, KC_RBRC,  KC_EQL,  KC_TAB, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX, OSM(MOD_LSFT), OSM(MOD_LGUI), XXXXXXX, XXXXXXX, XXXXXXX,        XXXXXXX,  KC_QUOT, XXXXXXX, XXXXXXX, KC_QUOT, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                 XXXXXXX,_______ ,_______                _______ ,LT(_ADJUST,KC_ESC) , XXXXXXX
+                                 XXXXXXX,_______ ,_______,             _______ , OSM(MOD_LALT), XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 
     [_MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                   ,-----------------------------------------------------.
-      XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,KC_BSPC, XXXXXXX,
   //|--------+-----+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------|
       XXXXXXX,KC_AGAIN, KC_S,    KC_D, KC_FIND,    KC_G,                        KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,
   //|--------+-----+--------+--------+--------+--------|                      |--------+--------+--------+--------+--------+--------|
@@ -100,6 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                 XXXXXXX, LT(_ADJUST,KC_ESC), KC_BTN1, KC_BTN2, _______,XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
+
     [_ADJUST] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, KC_F1  , KC_F2  , KC_F3  ,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, XXXXXXX,
@@ -251,6 +259,7 @@ static bool scrolling_mode = false;
 #define pim_red   pimoroni_trackball_set_rgbw(64,0,0,64)
 #define pim_green pimoroni_trackball_set_rgbw(0,64,0,64)
 #define pim_blue  pimoroni_trackball_set_rgbw(0,0,64,64)
+#define pim_white  pimoroni_trackball_set_rgbw(64,64,64,64)
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     if (is_keyboard_master()) {
@@ -272,6 +281,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             case _MOUSE:
                 toggle_pointing_mode_id(PM_NONE);
                 pim_blue;
+                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
+                    scrolling_mode = false;
+                    pointing_device_set_cpi(8000);
+                }
+                break;
+            case _ADJUST:
+                toggle_pointing_mode_id(PM_NONE);
+                pim_white;
                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so
                     scrolling_mode = false;
                     pointing_device_set_cpi(8000);
