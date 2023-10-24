@@ -29,6 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define POINTING_DEVICE_MODES_ENABLE
 #define POINTING_DEVICE_ROTATION_90
 #define TAPPING_TOGGLE 2
+#define ONESHOT_TIMEOUT 1000
 /* #define TAPPING_TERM 175 */
 #define SPLIT_WPM_ENABLE
 /* #define QUICK_TAP_TERM 1 */
