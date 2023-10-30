@@ -51,13 +51,25 @@ enum custom_keycodes {
 
 enum Taps {
     TD_ESC_Q,
-    TD_QUO_SLSH, // swapping those two. slash is a lot less usefiul
+    TD_QUO_SLSH,
+    TD_CM_MNS,
+    TD_DO_EQ,
+    TD_SL_BSL,
+    TD_ESC_BSPC,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_QUO_SLSH] = ACTION_TAP_DANCE_DOUBLE(KC_QUOT, KC_SLSH),
-    [TD_ESC_Q] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_Q),
+    [TD_CM_MNS] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_MINS),
+    [TD_DO_EQ] = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_EQL),
+    [TD_SL_BSL] = ACTION_TAP_DANCE_DOUBLE(KC_SLSH, KC_BSLS),
+    [TD_ESC_BSPC] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_BSPC),
 };
+
+#define TD_COMM TD(TD_CM_MNS)
+#define TD_DOT  TD(TD_DO_EQ)
+#define TD_SLSH TD(TD_SL_BSL)
+#define TD_ESC TD(TD_ESC_BSPC)
 
 #define A_H_ALT MT(MOD_LALT,KC_A)
 #define S_H_GUI MT(MOD_LGUI,KC_S)
@@ -65,7 +77,7 @@ tap_dance_action_t tap_dance_actions[] = {
 #define D_H_CTL MT(MOD_LCTL,KC_D)
 
 /* #define A_H_ALT MT(MOD_LALTKC_A) */
-#define L_H_GUI MT(MOD_LGUI,KC_L)
+#define Z_H_GUI MT(MOD_LGUI,KC_Z)
 #define J_H_SFT MT(MOD_LSFT,KC_J)
 #define K_H_CTL MT(MOD_LCTL,KC_K)
 
@@ -86,24 +98,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, A_H_ALT, S_H_GUI, D_H_CTL, F_H_SFT,    KC_G,                         KC_H, J_H_SFT, K_H_CTL, L_H_GUI, KC_BSPC, XXXXXXX,
+      XXXXXXX,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,  TD_ESC, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT,  KC_ESC, XXXXXXX,
+      XXXXXXX, Z_H_GUI,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, TD_COMM,  TD_DOT, TD_SLSH, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                 XXXXXXX,OSL(_SCROLL), SPC_H_LCTL,     ENT_H_SFT, OSL(_MOUSE),XXXXXXX
+                                 XXXXXXX, KC_SPC ,    OSFT,            OCTL, TO(_SCROLL),XXXXXXX
                                       //`--------------------------'  `--------------------------'
                                       //
   ),
-
     [_SCROLL] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,    OALT,    OGUI,    OCTL,    OSFT,  KC_GRV,                      KC_MINS, KC_LBRC, KC_RBRC, KC_QUOT, KC_SCLN, XXXXXXX,
+      XXXXXXX,  KC_ESC,  KC_TAB,  KC_GRV, KC_QUOT, KC_COLN,                      KC_SCLN, KC_LCBR, KC_RCBR, KC_QUOT, KC_BSPC, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       KC_EQL, XXXXXXX, KC_COMM, XXXXXXX, KC_SLSH, XXXXXXX,
+      XXXXXXX,    OGUI, XXXXXXX, KC_LPRN, KC_RPRN, TO(_ADJUST),                  KC_PIPE, KC_LBRC, KC_RBRC,  KC_DOT, KC_SLSH, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                 XXXXXXX,_______ ,_______,             _______ , ALT_TAB, XXXXXXX
+                                 XXXXXXX,TO(_QWERTY), ENT_H_SFT,              OCTL , TO(_MOUSE), XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -111,11 +122,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
       XXXXXXX, KC_EXLM, KC_AT  , KC_HASH, KC_DLR , KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX,  KC_ESC, XXXXXXX, XXXXXXX, KC_FIND, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, KC_BSPC, XXXXXXX,
+      XXXXXXX,  KC_ESC,  KC_TAB,    OALT, KC_FIND, XXXXXXX,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, KC_BSPC, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, KC_UNDO,  KC_CUT, KC_COPY,KC_PASTE,KC_AGAIN,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END, KC_BSLS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                               XXXXXXX,OSL(_ADJUST), KC_BTN1, KC_BTN2, _______,XXXXXXX
+                               XXXXXXX,TO(_QWERTY), KC_BTN1,           KC_BTN2,TO(_SCROLL) ,XXXXXXX
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -127,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, PR_SCR ,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          XXXXXXX, _______, XXXXXXX,     XXXXXXX, _______, XXXXXXX
+                                        XXXXXXX,TO(_QWERTY), XXXXXXX,     XXXXXXX, TO(_MOUSE), XXXXXXX
                                       //`--------------------------'  `--------------------------'
   )
 };
