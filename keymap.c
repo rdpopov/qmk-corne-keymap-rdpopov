@@ -51,7 +51,7 @@ enum custom_keycodes {
 
 /* enum Taps { */
 /*     [TD_SP_TB] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS), */
-/* }; */
+/* } */
 
 tap_dance_action_t tap_dance_actions[] = {
 
@@ -78,19 +78,19 @@ OSM(MOD_LSFT),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,     KC_7,   KC_8,    KC_9,    KC_0, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                     _______,OSM(MOD_LCTL),  KC_SPC,  KC_ENT,    OSM(MOD_LCTL), _______
+                                     _______,OSM(MOD_LCTL),  KC_SPC,  KC_ENT,    OSM(MOD_LCTL), MO(_ADJUST)
                                       //`--------------------------'  `--------------------------'
   ),
 
     [_MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_BTN3, KC_BTN2,  KC_COMM,  KC_DOT, KC_SLSH,  KC_TAB,
+       KC_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_BTN3, KC_BTN2,  KC_UP,  KC_DOT, KC_SLSH,  KC_TAB,
   //|--------+-----+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|com
-      KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_LEFT, KC_DOWN,   KC_UP,KC_RIGHT, XXXXXXX, XXXXXXX,
+      KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      CW_TOGG,  KC_LEFT, KC_DOWN ,KC_RIGHT, XXXXXXX, XXXXXXX,
   //|--------+-----+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END, KC_BTN1, KC_TAB,
+      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END,XXXXXXX, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                     _______,OSM(MOD_LCTL),  KC_BTN1,     KC_BTN2, OSM(MOD_RALT), _______
+                                     KC_CAPS,OSM(MOD_LCTL),  KC_BTN1,     KC_BTN2, OSM(MOD_RALT), _______
                                       //`--------------------------'  `--------------------------'
   ),
     [_ADJUST] = LAYOUT_split_3x6_3(
@@ -244,6 +244,7 @@ static bool scrolling_mode = false;
 #define pim_red   pimoroni_trackball_set_rgbw(64,0,0,64)
 #define pim_green pimoroni_trackball_set_rgbw(0,64,0,64)
 #define pim_blue  pimoroni_trackball_set_rgbw(0,0,64,64)
+#define pim_white  pimoroni_trackball_set_rgbw(64,64,64,64)
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     if (is_keyboard_master()) {
@@ -265,6 +266,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             case _MOUSE:
                 /* toggle_pointing_mode_id(PM_NONE); for that caret csrolling */
                 pim_blue;
+                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
+                    scrolling_mode = false;
+                    pointing_device_set_cpi(8000);
+                }
+                break;
+            case _ADJUST:
+                /* toggle_pointing_mode_id(PM_NONE); for that caret csrolling */
+                pim_white;
                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so
                     scrolling_mode = false;
                     pointing_device_set_cpi(8000);
