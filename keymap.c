@@ -49,9 +49,9 @@ enum custom_keycodes {
     KC_LAYER
 };
 
-enum Taps {
-    [TD_SP_TB] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
-}
+/* enum Taps { */
+/*     [TD_SP_TB] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS), */
+/* }; */
 
 tap_dance_action_t tap_dance_actions[] = {
 
@@ -249,7 +249,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     if (is_keyboard_master()) {
         switch (get_highest_layer(state)) {
             case _QWERTY:
-                toggle_pointing_mode_id(PM_CARET);
+                /* toggle_pointing_mode_id(PM_CARET);  for that caret scrolling */
                 pim_green;
                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so
                     scrolling_mode = false;
@@ -257,13 +257,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
                 }
                 break;
             case _SCROLL:  // If we're on the _MOUSE layer enable scrolling mode
-                toggle_pointing_mode_id(PM_NONE);
+                /* toggle_pointing_mode_id(PM_NONE); for that caret scrolling */
                 pim_red;
                 scrolling_mode = true;
                 pointing_device_set_cpi(1000);
                 break;
             case _MOUSE:
-                toggle_pointing_mode_id(PM_NONE);
+                /* toggle_pointing_mode_id(PM_NONE); for that caret csrolling */
                 pim_blue;
                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so
                     scrolling_mode = false;
