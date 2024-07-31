@@ -18,9 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-#ifdef PIMORONI_TRACKBALL_ENABLE
-#include "drivers/sensors/pimoroni_trackball.h"
-#endif
+#define AZOTEQ_IQS5XX_TPS43
+#include "drivers/sensors/azoteq_iqs5xx.h"
 
 #define VOL_UP KC_KB_VOLUME_UP
 #define VOL_DOWN KC_KB_VOLUME_DOWN
@@ -60,13 +59,13 @@ tap_dance_action_t tap_dance_actions[] = {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_BSPC,
+       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
 OSM(MOD_LGUI),    KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-OSM(MOD_LSFT),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_TAB,
+OSM(MOD_LSFT),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ENT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                     TT(_SCROLL),  OSM(MOD_LCTL),  KC_SPC,  KC_ENT, OSM(MOD_RALT),   TT(_MOUSE)
+                                     MO(_SCROLL),  OSM(MOD_RALT),  KC_SPC,  KC_SPC, OSM(MOD_LCTL),   MO(_MOUSE)
                                       //`--------------------------'  `--------------------------'
                                       //
   ),
@@ -78,19 +77,19 @@ OSM(MOD_LSFT),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,     KC_7,   KC_8,    KC_9,    KC_0, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                     _______,OSM(MOD_LCTL),  KC_SPC,  KC_ENT,    OSM(MOD_LCTL), MO(_ADJUST)
+                                     _______,_______,  KC_SPC,          KC_SPC, _______, MO(_ADJUST)
                                       //`--------------------------'  `--------------------------'
   ),
 
     [_MOUSE] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_BTN3, KC_BTN2,  KC_UP,  KC_DOT, KC_SLSH,  KC_TAB,
+       KC_ESC, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_WH_U, KC_BTN2,  KC_UP,  KC_DOT, KC_SLSH,  KC_BSPC,
   //|--------+-----+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|com
-      KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      CW_TOGG,  KC_LEFT, KC_DOWN ,KC_RIGHT, XXXXXXX, XXXXXXX,
+      KC_LGUI, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_WH_D,  KC_LEFT, KC_DOWN ,KC_RIGHT, XXXXXXX, XXXXXXX,
   //|--------+-----+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END,XXXXXXX, KC_TAB,
+      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                      KC_HOME, KC_PGUP, KC_PGDN,  KC_END,XXXXXXX, KC_TAB,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                     KC_CAPS,OSM(MOD_LCTL),  KC_BTN1,     KC_BTN2, OSM(MOD_RALT), _______
+                                     KC_CAPS,_______,  KC_BTN1,     KC_BTN2, _______, _______
                                       //`--------------------------'  `--------------------------'
   ),
     [_ADJUST] = LAYOUT_split_3x6_3(
@@ -99,7 +98,7 @@ OSM(MOD_LSFT),    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       XXXXXXX, XXXXXXX, XXXXXXX, VOL_UP, VOL_DOWN,VOL_MUTE,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F11,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, PR_SCR ,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_F12,
+      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, PR_SCR ,                      KC_ACL0, KC_ACL1, KC_ACL2, XXXXXXX, XXXXXXX,  KC_F12,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                            _______,OSM(MOD_LCTL),  KC_SPC,     KC_ENT, OSM(MOD_RALT), _______
                                       //`--------------------------'  `--------------------------'
@@ -240,59 +239,59 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
 
 #define CAT_SIZE 144
 
-static bool scrolling_mode = false;
-#define pim_red   pimoroni_trackball_set_rgbw(64,0,0,64)
-#define pim_green pimoroni_trackball_set_rgbw(0,64,0,64)
-#define pim_blue  pimoroni_trackball_set_rgbw(0,0,64,64)
-#define pim_white  pimoroni_trackball_set_rgbw(64,64,64,64)
+/* static bool scrolling_mode = false; */
+/* #define pim_red   pimoroni_trackball_set_rgbw(64,0,0,64) */
+/* #define pim_green pimoroni_trackball_set_rgbw(0,64,0,64) */
+/* #define pim_blue  pimoroni_trackball_set_rgbw(0,0,64,64) */
+/* #define pim_white  pimoroni_trackball_set_rgbw(64,64,64,64) */
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    if (is_keyboard_master()) {
-        switch (get_highest_layer(state)) {
-            case _QWERTY:
-                /* toggle_pointing_mode_id(PM_CARET);  for that caret scrolling */
-                pim_green;
-                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
-                    scrolling_mode = false;
-                    pointing_device_set_cpi(8000);
-                }
-                break;
-            case _SCROLL:  // If we're on the _MOUSE layer enable scrolling mode
-                /* toggle_pointing_mode_id(PM_NONE); for that caret scrolling */
-                pim_red;
-                scrolling_mode = true;
-                pointing_device_set_cpi(1000);
-                break;
-            case _MOUSE:
-                /* toggle_pointing_mode_id(PM_NONE); for that caret csrolling */
-                pim_blue;
-                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
-                    scrolling_mode = false;
-                    pointing_device_set_cpi(8000);
-                }
-                break;
-            case _ADJUST:
-                /* toggle_pointing_mode_id(PM_NONE); for that caret csrolling */
-                pim_white;
-                if (scrolling_mode) {  // check if we were scrolling before and set disable if so
-                    scrolling_mode = false;
-                    pointing_device_set_cpi(8000);
-                }
-                break;
-        }
-    }
-    return state;
-}
+/* layer_state_t layer_state_set_user(layer_state_t state) { */
+/*     if (is_keyboard_master()) { */
+/*         switch (get_highest_layer(state)) { */
+/*             case _QWERTY: */
+/*                 /1* toggle_pointing_mode_id(PM_CARET);  for that caret scrolling *1/ */
+/*                 pim_green; */
+/*                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so */
+/*                     scrolling_mode = false; */
+/*                     pointing_device_set_cpi(8000); */
+/*                 } */
+/*                 break; */
+/*             case _SCROLL:  // If we're on the _MOUSE layer enable scrolling mode */
+/*                 /1* toggle_pointing_mode_id(PM_NONE); for that caret scrolling *1/ */
+/*                 pim_red; */
+/*                 scrolling_mode = true; */
+/*                 pointing_device_set_cpi(1000); */
+/*                 break; */
+/*             case _MOUSE: */
+/*                 /1* toggle_pointing_mode_id(PM_NONE); for that caret csrolling *1/ */
+/*                 pim_blue; */
+/*                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so */
+/*                     scrolling_mode = false; */
+/*                     pointing_device_set_cpi(8000); */
+/*                 } */
+/*                 break; */
+/*             case _ADJUST: */
+/*                 /1* toggle_pointing_mode_id(PM_NONE); for that caret csrolling *1/ */
+/*                 pim_white; */
+/*                 if (scrolling_mode) {  // check if we were scrolling before and set disable if so */
+/*                     scrolling_mode = false; */
+/*                     pointing_device_set_cpi(8000); */
+/*                 } */
+/*                 break; */
+/*         } */
+/*     } */
+/*     return state; */
+/* } */
 
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    if (scrolling_mode) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }
-    return mouse_report;
-}
+/* report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) { */
+/*     if (scrolling_mode) { */
+/*         mouse_report.h = mouse_report.x; */
+/*         mouse_report.v = mouse_report.y; */
+/*         mouse_report.x = 0; */
+/*         mouse_report.y = 0; */
+/*     } */
+/*     return mouse_report; */
+/* } */
 
 
 static char pressed_mods[5] = {0};

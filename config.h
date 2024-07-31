@@ -26,12 +26,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MASTER_RIGHT
 // #define EE_HANDS
 #define SPLIT_TRANSPORT_MIRROR
-#define POINTING_DEVICE_MODES_ENABLE
-#define POINTING_DEVICE_ROTATION_90
+#define AZOTEQ_IQS5XX_TPS43
+/* #define POINTING_DEVICE_ROTATION_90 */
 #define TAPPING_TOGGLE 2
 /* #define TAPPING_TERM 175 */
 #define SPLIT_WPM_ENABLE
 /* #define QUICK_TAP_TERM 1 */
+
+#define POINTING_DEVICE_MODES_ENABLE
+#define AZOTEQ_IQS5XX_TAP_ENABLE true
+#define AZOTEQ_IQS5XX_TWO_FINGER_TAP_ENABLE true
+#define AZOTEQ_IQS5XX_SCROLL_ENABLE true
+#define AZOTEQ_IQS5XX_ROTATION_90
+
+
+
+
 
 // Mouse kinetic -> https://github.com/qmk/qmk_firmware/blob/master/docs/feature_mouse_keys.md
 #define MK_KINETIC_SPEED
