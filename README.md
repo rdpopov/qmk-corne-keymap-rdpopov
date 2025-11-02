@@ -28,10 +28,26 @@
 qmk compile --keyboard crkbd/rev1 --keymap rdpopov -e CONVERT_TO=kb2040
 ```
 
-The keymap name is the same as the folder name
+The keymap name is the same as the folder name - my keymap is `rdpopov`
 
+4. Flashing the firmware -  On kb 2040 microcontroller :
+- Connect keyboard to pc
+- on the outside rim of the keybard, just behind the  microcontroller and one of
+  the switches is the reset button - press it 2 times quickly
+- Should show up as usb device
+- From root of qmk_firmware folder should be a 
+  ```bash 
+    # This is the firmware that needs to be flashed
+     ls -la ./qmk_firmware/
+    -rw-rw-r--    1 rosko rosko  83968 Nov  2 19:28 crkbd_rev1_rdpopov_kb2040.uf2
+  ```
+- Copy the uf2 file to the kb2040 usb device. 
+- The keyboard should restart and be flashed with new firmware
 
 ## Layouts 
-https://github.com/thrly/corne-keyboard-layout
-https://www.youtube.com/watch?v=8wZ8FRwOzhU
-https://www.youtube.com/watch?v=wTMcH7u-vu0&t=245s
+- [Miryoky layout](https://github.com/thrly/corne-keyboard-layout.md)
+- [Some guy with interesting keymap for smaller keyboard](https://www.youtube.com/watch?v=8wZ8FRwOzhU.md)
+- [Some normal guy](https://www.youtube.com/watch?v=wTMcH7u-vu0&t=245s.md)
+- This is for a smaller keyboard but ideas still hold: [My ferris sweep keymap](https://github.com/rdpopov/zmk-config-kai-simple-dongle/blob/main/config/kai_simple.keymap.md)
+- [Reddit](https://www.reddit.com/r/ErgoMechKeyboards/)
+- [Discord](https://discord.gg/qmk.md) - everything is on there
